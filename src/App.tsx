@@ -173,7 +173,7 @@ const testimonials = [
 ];
 
 const contactChannels = [
-  { label: "Email", detail: "hey@aureli.ai" },
+  { label: "Email", detail: "ali@aureliconsulting.com" },
   { label: "Phone and SMS", detail: "720-555-0199" },
   { label: "Office Hours", detail: "8am - 6pm MT, Mon-Sat" },
 ];
@@ -557,7 +557,12 @@ function App() {
               ))}
             </ul>
           </div>
-          <form className="contact__form" data-reveal onSubmit={handleSubmit}>
+          <form
+            className="contact__form"
+            data-reveal
+            action="https://formspree.io/f/xovpvpbj"
+            method="POST"
+          >
             <div className="contact__fields">
               <label>
                 <span className="contact__label">Name</span>

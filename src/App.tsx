@@ -1,5 +1,5 @@
 ﻿import { useEffect, useMemo, useState } from "react";
-import type { ChangeEvent, FormEvent } from "react";
+import type { ChangeEvent } from "react";
 import "./styles/App.css";
 
 const navLinks = [
@@ -248,11 +248,11 @@ function App() {
       setStatus("idle");
     };
 
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    setStatus("submitted");
-    setFormData(initialFormState);
-  };
+  // const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+  //   event.preventDefault();
+  //   setStatus("submitted");
+  //   setFormData(initialFormState);
+  // };
 
   return (
     <div className="page">

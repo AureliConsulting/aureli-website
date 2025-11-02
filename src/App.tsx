@@ -336,7 +336,7 @@ function App() {
           </div>
         </section>
 
-        <section className="section section--partners" id="partners">
+        {/* <section className="section section--partners" id="partners">
           <div className="section__header" data-reveal>
             <span className="section__eyebrow">Trusted by local leaders</span>
           </div>
@@ -347,7 +347,7 @@ function App() {
               </span>
             ))}
           </div>
-        </section>
+        </section> */}
 
         <section className="section" id="services">
           <div className="section__header" data-reveal>

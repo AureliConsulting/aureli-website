@@ -35,14 +35,14 @@ const metrics = [
   { value: "40%", label: "Typical boost in booked appointments" },
 ];
 
-const partners = [
-  "Front Range Dental Care",
-  "Summit Fitness Club",
-  "Peak HVAC Pros",
-  "Aspen Legal Partners",
-  "Urban Bloom Med Spa",
-  "Mile High Home Services",
-];
+// const partners = [
+//   "Front Range Dental Care",
+//   "Summit Fitness Club",
+//   "Peak HVAC Pros",
+//   "Aspen Legal Partners",
+//   "Urban Bloom Med Spa",
+//   "Mile High Home Services",
+// ];
 
 const steps = [
   {

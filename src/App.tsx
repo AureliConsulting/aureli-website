@@ -287,9 +287,9 @@ function App() {
           <div className="hero__content" data-reveal>
             <span className="hero__tag">AI for Local Businesses</span>
             <h1 className="hero__title">
-              Launch AI receptionists.
+              Generate more leads.
               <br />
-              Book more customers.
+              Make more money.
             </h1>
             <p className="hero__subtitle">
               Aureli builds branded voice and chat automations that answer every

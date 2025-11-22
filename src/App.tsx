@@ -1,5 +1,5 @@
-﻿import { useEffect, useMemo, useState } from "react";
-import type { ChangeEvent } from "react";
+﻿import Cal, { getCalApi } from "@calcom/embed-react";
+import { useEffect, useMemo } from "react";
 import "./styles/App.css";
 
 const navLinks = [
@@ -201,23 +201,7 @@ const faqs = [
   },
 ];
 
-type ContactFormFields = {
-  name: string;
-  email: string;
-  company: string;
-  scope: string;
-};
-
-const initialFormState: ContactFormFields = {
-  name: "",
-  email: "",
-  company: "",
-  scope: "",
-};
-
 function App() {
-  const [formData, setFormData] = useState<ContactFormFields>(initialFormState);
-  const [status, setStatus] = useState<"idle" | "submitted">("idle");
   const currentYear = useMemo(() => new Date().getFullYear(), []);
 
   useEffect(() => {
@@ -240,19 +224,20 @@ function App() {
     return () => observer.disconnect();
   }, []);
 
-  const handleChange =
-    (field: keyof ContactFormFields) =>
-    (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-      const { value } = event.target;
-      setFormData((prev) => ({ ...prev, [field]: value }));
-      setStatus("idle");
-    };
-
-  // const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
-  //   event.preventDefault();
-  //   setStatus("submitted");
-  //   setFormData(initialFormState);
-  // };
+  useEffect(() => {
+    (async function () {
+      const cal = await getCalApi({ namespace: "30min" });
+      cal("ui", {
+        theme: "dark",
+        cssVarsPerTheme: {
+          light: { "cal-brand": "#237cc5" },
+          dark: { "cal-brand": "#293bb7" },
+        },
+        hideEventTypeDetails: false,
+        layout: "month_view",
+      });
+    })();
+  }, []);
 
   return (
     <div className="page">
@@ -561,82 +546,39 @@ function App() {
               ))}
             </ul>
           </div>
-          <form
-            className="contact__form"
-            data-reveal
-            action="https://formspree.io/f/xovpvpbj"
-            method="POST"
-          >
-            <div className="contact__fields">
-              <label>
-                <span className="contact__label">Name</span>
-                <input
-                  name="name"
-                  onChange={handleChange("name")}
-                  placeholder="Ada Lovelace"
-                  required
-                  value={formData.name}
-                  // disabled={status === "submitting"}
-                />
-              </label>
-              <label>
-                <span className="contact__label">Email</span>
-                <input
-                  name="email"
-                  onChange={handleChange("email")}
-                  placeholder="you@company.com"
-                  required
-                  type="email"
-                  value={formData.email}
-                  // disabled={status === "submitting"}
-                />
-              </label>
-              <label>
-                <span className="contact__label">Company</span>
-                <input
-                  name="company"
-                  onChange={handleChange("company")}
-                  placeholder="Acme Robotics"
-                  required
-                  value={formData.company}
-                  // disabled={status === "submitting"}
-                />
-              </label>
-            </div>
-            <label className="contact__textarea">
-              <span className="contact__label">
-                Priority conversation or goal
-              </span>
-              <textarea
-                name="scope"
-                onChange={handleChange("scope")}
-                placeholder="e.g., Cover after-hours calls with an AI receptionist that books and confirms appointments."
-                required
-                rows={4}
-                value={formData.scope}
-                // disabled={status === "submitting"}
-              />
-            </label>
-
-            {status === "submitted" ? (
-              <p className="form__success">
-                ✓ Thanks! We'll reach out shortly with next steps.
+          <div className="contact__form" data-reveal>
+            <div className="contact__scheduler-intro">
+              <span className="contact__label">Book a working session</span>
+              <p className="contact__subtitle">
+                Grab time on our calendar for a 30-minute discovery call.
+                We&apos;ll review your scripts, tooling, and automation goals
+                live.
               </p>
-            ) : (
               <p className="form__hint">
-                We'll schedule a discovery session and share tailored automation
-                demos.
+                Prefer a new tab?{" "}
+                <a
+                  href="https://cal.com/aureli/discovery-call"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  Open the scheduler
+                </a>
+                .
               </p>
-            )}
-
-            <button
-              className="contact__submit"
-              type="submit"
-              // disabled={status === "submitting"}
+            </div>
+            <div
+              className="contact__scheduler-embed"
+              aria-live="polite"
+              style={{ minHeight: "520px" }}
             >
-              "Send message"
-            </button>
-          </form>
+              <Cal
+                namespace="30min"
+                calLink="ali-sulaiman-b2yeyp/30min"
+                style={{ width: "100%", height: "100%", overflow: "scroll" }}
+                config={{ layout: "month_view", theme: "dark" }}
+              />
+            </div>
+          </div>
         </section>
 
         <section className="section section--faq" id="faq">

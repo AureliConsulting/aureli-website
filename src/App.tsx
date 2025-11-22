@@ -6,7 +6,7 @@ const navLinks = [
   { label: "Services", href: "#services" },
   { label: "Process", href: "#process" },
   { label: "Use cases", href: "#use-cases" },
-  { label: "Pricing", href: "#pricing" },
+  // { label: "Pricing", href: "#pricing" },
   { label: "Demos", href: "#demos" },
   { label: "FAQ", href: "#faq" },
 ];
@@ -128,7 +128,7 @@ const demos = [
   },
 ];
 
-const pricingOptions = [
+/* const pricingOptions = [
   {
     name: "Build and Launch",
     price: "$1,000 - $1,500",
@@ -155,7 +155,7 @@ const pricingOptions = [
     ],
     featured: true,
   },
-];
+]; */
 
 const testimonials = [
   {
@@ -300,9 +300,11 @@ function App() {
               <a className="hero__primary" href="#contact">
                 Start your AI concierge plan
               </a>
+              {/*
               <a className="hero__secondary" href="#pricing">
                 See pricing
               </a>
+              */}
             </div>
             <div className="hero__meta">
               <span>✓ AI receptionists</span>
@@ -431,6 +433,7 @@ function App() {
           </div>
         </section>
 
+        {/*
         <section className="section section--pricing" id="pricing">
           <div className="section__header" data-reveal>
             <span className="section__eyebrow">Pricing</span>
@@ -472,6 +475,7 @@ function App() {
             )}
           </div>
         </section>
+        */}
 
         <section className="section section--demos" id="demos">
           <div className="section__header" data-reveal>

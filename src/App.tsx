@@ -411,6 +411,12 @@ const demos = [
 ];
 
 const testimonials = [
+  {
+    quote:
+      "Our AI receptionist books jobs while we are on-site. Weekend calls no longer slip through the cracks.",
+    author: "Ali Sulaiman",
+    role: "CEO",
+  },
 ];
 
 const contactChannels = [

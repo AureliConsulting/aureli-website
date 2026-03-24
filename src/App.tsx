@@ -253,41 +253,45 @@ const useCases = [
 const workflows: WorkflowItem[] = [
   {
     id: "wf-001",
-    title: "Lead Intake Triage Agent",
+    title: "WhatsApp Deterministic AI Agent - Task Assigner",
     shortDesc:
-      "Classifies inbound leads by urgency and fit, auto-drafts personalized replies, and logs enriched contacts to CRM.",
+      "Automate turning informal CEO instructions into structured CRM tasks to eliminate manual data entry.",
     longDesc:
-      "When a new lead submits a form, this hybrid pipeline fires immediately. Claude classifies the submission by urgency and ICP fit, drafts a personalized reply using your brand voice, and pushes the enriched contact to HubSpot — all before your team sees the inbox. Average runtime: under 8 seconds per lead. Eliminates 4+ hours of manual triage per day.",
-    category: "Hybrid Pipeline",
+      "Built an n8n workflow triggered via WhatsApp (WAHA). It processes text or voice notes (using OpenAI Whisper) and an LLM to extract the employee, project, task, and date. After validating the intent and date, it links Airtable relational IDs, creates the task, and sends a WhatsApp confirmation.",
+    category: "n8n Workflow",
     categoryStyle: "hybrid",
     status: "active",
-    tech: ["n8n", "Claude API", "HubSpot", "Gmail"],
+    tech: ["n8n", "ChatGPT API", "Airtable", "WhatsApp"],
     triggerType: "Form Webhook",
-    stepsCount: 14,
+    stepsCount: 15,
     complexity: 82,
-    outcome: "Cuts manual triage by 4 hrs/day",
+    outcome:
+      "Removed administrative bottlenecks, prevented data loss from field directives, and maintained perfect database hygiene.",
+    images: ["/images/workflows/waha1.png"],
     nodes: [
-      { label: "Form Trigger", type: "trigger" },
-      { label: "Classify", type: "ai" },
+      { label: "WhatsApp Trigger", type: "trigger" },
+      { label: "Analyze", type: "ai" },
       { label: "Draft Reply", type: "ai" },
       { label: "CRM Log", type: "output" },
+      { label: "WhatsApp Reply", type: "output" },
     ],
   },
   {
     id: "wf-002",
-    title: "Cold Email Personalization Engine",
+    title: "Digital AI Receptionist",
     shortDesc:
-      "Enriches a lead list with scraped company data, generates unique personalized openers using Claude, and sends via SendGrid.",
+      "Provide a fully automated, human-like phone receptionist for Eliminator Boats to handle sales, service, general inquiries, and emergencies without missed calls.",
     longDesc:
-      "Ingests a CSV of cold prospects, queries Apify for company-level context, and hands the enriched data to Claude to write a unique opening line per contact — no templates. Messages are dispatched via SendGrid with open and click tracking baked in. All activity syncs back to the lead list with delivery and engagement stats.",
+      "An AI voice receptionist with structured conversation flows for sales, service, hiring, and emergency routing. Can also check calendar availability and book appointments, while logging caller details to Sheets for staff visibility.",
     category: "n8n Workflow",
     categoryStyle: "n8n",
     status: "active",
-    tech: ["n8n", "Claude API", "Apify", "SendGrid"],
+    tech: ["n8n", "Retell AI", "Make.com", "Cal.com"],
     triggerType: "Lead List",
     stepsCount: 12,
     complexity: 68,
-    outcome: "38% higher reply rate vs templates",
+    outcome:
+      "Eliminated missed calls, improved caller experience, and streamlined scheduling and intake. This allowed staff to focus on important conversations while the AI other calls.",
     nodes: [
       { label: "Lead List", type: "trigger" },
       { label: "Enrich", type: "action" },
@@ -1326,7 +1330,7 @@ function App() {
       >
         <div className="modal-backdrop" onClick={closeModal} />
         <div className="modal-panel">
-          <button
+          {/* <button
             className="modal-close"
             onClick={closeModal}
             aria-label="Close modal"
@@ -1342,7 +1346,7 @@ function App() {
               <line x1="18" y1="6" x2="6" y2="18" />
               <line x1="6" y1="6" x2="18" y2="18" />
             </svg>
-          </button>
+          </button> */}
 
           {modalWorkflow && (
             <div>

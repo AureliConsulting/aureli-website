@@ -411,18 +411,6 @@ const demos = [
 ];
 
 const testimonials = [
-  {
-    quote:
-      "Our AI receptionist books jobs while we are on-site. Weekend calls no longer slip through the cracks.",
-    author: "Lena Martinez",
-    role: "Owner, Mile High Home Services",
-  },
-  {
-    quote:
-      "The outbound email bot keeps our pipeline warm without sounding robotic. It paid for itself in the first month.",
-    author: "Chris O'Neal",
-    role: "Managing Partner, Summit Fitness Club",
-  },
 ];
 
 const contactChannels = [

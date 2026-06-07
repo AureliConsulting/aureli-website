@@ -572,13 +572,9 @@ function App() {
     const nav = navRef.current;
     if (!nav) return;
     const handler = () => {
-      nav.style.background =
-        window.scrollY > 60 ? "rgba(10,10,15,0.95)" : "rgba(10,10,15,0.85)";
-      nav.style.borderBottomColor =
-        window.scrollY > 60
-          ? "rgba(255,255,255,0.1)"
-          : "rgba(255,255,255,0.07)";
+      nav.classList.toggle("nav--scrolled", window.scrollY > 40);
     };
+    handler();
     window.addEventListener("scroll", handler, { passive: true });
     return () => window.removeEventListener("scroll", handler);
   }, []);
@@ -775,9 +771,8 @@ function App() {
 
       {/* Hero */}
       <section className="hero" id="hero">
-        <div className="orb orb-1" aria-hidden="true" />
-        <div className="orb orb-2" aria-hidden="true" />
-        <div className="orb orb-3" aria-hidden="true" />
+        <div className="hero-gradient" aria-hidden="true" />
+        <div className="hero-grain" aria-hidden="true" />
 
         <div className="hero-content" data-reveal>
           <div className="hero-badge">
@@ -786,9 +781,17 @@ function App() {
           </div>
 
           <h1 className="hero-title">
-            Generate more <span className="gradient-text">leads</span>.
+            Generate more{" "}
+            <span className="hero-word-blur gradient-text" data-text="leads">
+              leads
+            </span>
+            .
             <br />
-            Make more <span className="gradient-text">money</span>.
+            Make more{" "}
+            <span className="hero-word-blur gradient-text" data-text="money">
+              money
+            </span>
+            .
           </h1>
 
           <p className="hero-subtitle">
@@ -812,7 +815,7 @@ function App() {
               </svg>
               Start your AI concierge plan
             </a>
-            <a href="#workflows" className="btn btn-ghost">
+            <a href="#workflows" className="btn btn-ghost btn-ghost--light">
               <svg
                 width="16"
                 height="16"
@@ -828,28 +831,31 @@ function App() {
               View workflows
             </a>
           </div>
-
-          <div className="hero-stats" ref={statsRef}>
-            {heroStats.map(({ target, suffix, label }, i) => (
-              <Fragment key={label}>
-                {i > 0 && <div className="stat-divider" aria-hidden="true" />}
-                <div className="stat-item">
-                  <span
-                    className="stat-num"
-                    data-target={target}
-                    data-suffix={suffix}
-                  >
-                    0{suffix}
-                  </span>
-                  <span className="stat-label">{label}</span>
-                </div>
-              </Fragment>
-            ))}
-          </div>
         </div>
 
         <div className="scroll-indicator" aria-hidden="true">
           <div className="scroll-line" />
+        </div>
+      </section>
+
+      {/* Trust strip — closes the hero gradient section */}
+      <section className="trust-strip" aria-label="Results and proof">
+        <div className="trust-strip-inner" ref={statsRef}>
+          {heroStats.map(({ target, suffix, label }, i) => (
+            <Fragment key={label}>
+              {i > 0 && <div className="stat-divider" aria-hidden="true" />}
+              <div className="stat-item">
+                <span
+                  className="stat-num"
+                  data-target={target}
+                  data-suffix={suffix}
+                >
+                  0{suffix}
+                </span>
+                <span className="stat-label">{label}</span>
+              </div>
+            </Fragment>
+          ))}
         </div>
       </section>
 
@@ -874,6 +880,19 @@ function App() {
         </div>
       </section>
 
+      {/* Philosophy — brief impact statement */}
+      <section className="philosophy" id="philosophy" data-reveal>
+        <p className="philosophy__text">
+          Missed calls aren&apos;t a staffing problem.
+          <br />
+          They&apos;re an{" "}
+          <span className="philosophy__accent gradient-text">
+            infrastructure
+          </span>{" "}
+          problem.
+        </p>
+      </section>
+
       <main>
         {/* Metrics */}
         <section className="section section--metrics">
@@ -888,56 +907,67 @@ function App() {
         </section>
 
         {/* Services */}
-        <section className="section" id="services">
-          <div className="section__header" data-reveal>
-            <span className="section__eyebrow">Services</span>
-            <h2 className="section__title">
-              Services that keep every lead moving forward
-            </h2>
-            <p className="section__subtitle">
-              Comprehensive AI automation solutions designed specifically for
-              local businesses
-            </p>
+        <section className="section pinned-section" id="services">
+          <div className="pinned-section__title" aria-hidden="true">
+            Services
           </div>
-          <div className="grid">
-            {highlights.map(({ icon, title, description }) => (
-              <article
-                className="card"
-                data-reveal
-                key={title}
-                data-aos="fade-up"
-              >
-                <span className="card__icon" aria-hidden="true">
-                  {icon}
-                </span>
-                <h3>{title}</h3>
-                <p>{description}</p>
-              </article>
-            ))}
+          <div className="pinned-section__content">
+            <div className="section__header" data-reveal>
+              <span className="section__eyebrow">Services</span>
+              <h2 className="section__title">
+                Services that keep every lead moving forward
+              </h2>
+              <p className="section__subtitle">
+                Comprehensive AI automation solutions designed specifically for
+                local businesses
+              </p>
+            </div>
+            <div className="grid grid--stagger">
+              {highlights.map(({ icon, title, description }, i) => (
+                <article
+                  className="card card--rise"
+                  data-reveal
+                  key={title}
+                  data-aos="fade-up"
+                  style={{ transitionDelay: `${i * 100}ms` }}
+                >
+                  <span className="card__icon" aria-hidden="true">
+                    {icon}
+                  </span>
+                  <h3>{title}</h3>
+                  <p>{description}</p>
+                </article>
+              ))}
+            </div>
           </div>
         </section>
 
         {/* Process */}
-        <section className="section section--alt" id="process">
-          <div className="section__header" data-reveal>
-            <span className="section__eyebrow">Our Process</span>
-            <h2 className="section__title">How we launch your AI concierge</h2>
-            <p className="section__subtitle">
-              We blend automation expertise with local business know-how so your
-              agent sounds authentic and delivers measurable impact from the
-              very first week.
-            </p>
+        <section className="section section--alt pinned-section" id="process">
+          <div className="pinned-section__title" aria-hidden="true">
+            Process
           </div>
-          <div className="timeline">
-            {steps.map(({ id, label, detail }) => (
-              <div className="timeline__step" data-reveal key={id}>
-                <span className="timeline__id">{id}</span>
-                <div className="timeline__content">
-                  <h3>{label}</h3>
-                  <p>{detail}</p>
+          <div className="pinned-section__content">
+            <div className="section__header" data-reveal>
+              <span className="section__eyebrow">Our Process</span>
+              <h2 className="section__title">How we launch your AI concierge</h2>
+              <p className="section__subtitle">
+                We blend automation expertise with local business know-how so
+                your agent sounds authentic and delivers measurable impact from
+                the very first week.
+              </p>
+            </div>
+            <div className="timeline timeline--vertical">
+              {steps.map(({ id, label, detail }) => (
+                <div className="timeline__step" data-reveal key={id}>
+                  <span className="timeline__id">{id}</span>
+                  <div className="timeline__content">
+                    <h3>{label}</h3>
+                    <p>{detail}</p>
+                  </div>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
         </section>
 
@@ -978,7 +1008,14 @@ function App() {
         </section>
 
         {/* Workflow Portfolio */}
-        <section className="section section--workflows" id="workflows">
+        <section
+          className="section section--workflows pinned-section"
+          id="workflows"
+        >
+          <div className="pinned-section__title" aria-hidden="true">
+            Workflows
+          </div>
+          <div className="pinned-section__content">
           <div className="section-header" data-reveal>
             <div className="section-eyebrow ai-eyebrow">
               <span className="eyebrow-dot" />
@@ -1133,6 +1170,7 @@ function App() {
               </article>
             ))}
           </div>
+          </div>
         </section>
 
         {/* Demos */}
@@ -1178,30 +1216,33 @@ function App() {
         </section>
 
         {/* Testimonials */}
-        <section className="section section--testimonials" id="testimonials">
-          <div className="section__header" data-reveal>
-            <span className="section__eyebrow">Testimonials</span>
-            <h2 className="section__title">Results from local teams</h2>
-            <p className="section__subtitle">
-              Hear from owners who put Aureli on the front lines of customer
-              conversations and grew without hiring more staff.
-            </p>
+        <section
+          className="section section--testimonials pinned-section"
+          id="testimonials"
+        >
+          <div className="pinned-section__title" aria-hidden="true">
+            Reviews
           </div>
-          <div className="testimonial-grid">
-            {testimonials.map(({ quote, author, role }) => (
-              <figure
-                className="testimonial"
-                data-reveal
-                key={author}
-                data-aos="fade-up"
-              >
-                <blockquote>"{quote}"</blockquote>
-                <figcaption>
-                  <span className="testimonial__author">{author}</span>
-                  <span className="testimonial__role">{role}</span>
-                </figcaption>
-              </figure>
-            ))}
+          <div className="pinned-section__content">
+            <div className="section__header" data-reveal>
+              <span className="section__eyebrow">Testimonials</span>
+              <h2 className="section__title">Results from local teams</h2>
+              <p className="section__subtitle">
+                Hear from owners who put Aureli on the front lines of customer
+                conversations and grew without hiring more staff.
+              </p>
+            </div>
+            <div className="testimonial-track" data-reveal>
+              {testimonials.map(({ quote, author, role }) => (
+                <figure className="testimonial" key={author}>
+                  <blockquote>&ldquo;{quote}&rdquo;</blockquote>
+                  <figcaption>
+                    <span className="testimonial__author">{author}</span>
+                    <span className="testimonial__role">{role}</span>
+                  </figcaption>
+                </figure>
+              ))}
+            </div>
           </div>
         </section>
 
@@ -1282,6 +1323,29 @@ function App() {
           </div>
         </section>
       </main>
+
+      {/* Final CTA */}
+      <section className="final-cta" id="final-cta" data-reveal>
+        <div className="final-cta__glow" aria-hidden="true" />
+        <div className="final-cta__inner">
+          <h2 className="final-cta__title">
+            Build a predictable AI concierge for your business
+          </h2>
+          <p className="final-cta__subtitle">
+            Stop relying on inconsistent follow-ups and missed calls. We design
+            automation infrastructure that turns every inquiry into a booked
+            conversation.
+          </p>
+          <div className="hero-cta">
+            <a href="#contact" className="btn btn-primary btn-lg">
+              Book a consult
+            </a>
+            <a href="#workflows" className="btn btn-ghost">
+              View workflows
+            </a>
+          </div>
+        </div>
+      </section>
 
       {/* Footer */}
       <footer className="footer">

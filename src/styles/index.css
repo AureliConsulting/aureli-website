@@ -1,10 +1,81 @@
-/* ─── CSS Variables ──────────────────────────────────────────────── */
-:root {
+/* ─── Light theme (default) ─────────────────────────────────────── */
+:root,
+[data-theme="light"] {
+  color-scheme: light;
+
+  --bg-base:     #f4f6fb;
+  --bg-surface:  #ffffff;
+  --bg-elevated: #eef2f8;
+
+  --primary:       #7c3aed;
+  --primary-light: #6d28d9;
+  --primary-dim:   rgba(124, 58, 237, 0.1);
+  --primary-glow:  rgba(124, 58, 237, 0.22);
+
+  --accent:       #0891b2;
+  --accent-light: #0e7490;
+  --accent-dim:   rgba(8, 145, 178, 0.1);
+  --accent-glow:  rgba(8, 145, 178, 0.2);
+
+  --orange:      #ea580c;
+  --orange-light:#c2410c;
+  --orange-dim:  rgba(234, 88, 12, 0.1);
+  --orange-glow: rgba(234, 88, 12, 0.18);
+
+  --green:  #059669;
+  --amber:  #d97706;
+  --slate:  #64748b;
+
+  --text-primary:   #0f172a;
+  --text-secondary: #475569;
+  --text-muted:     #94a3b8;
+
+  --border-subtle: rgba(15, 23, 42, 0.08);
+  --border-soft:   rgba(15, 23, 42, 0.14);
+
+  --glass-bg:   rgba(255, 255, 255, 0.88);
+  --glass-blur: blur(20px) saturate(160%);
+
+  --nav-bg: rgba(255, 255, 255, 0.82);
+  --nav-bg-scrolled: rgba(255, 255, 255, 0.96);
+  --nav-shadow: 0 8px 32px rgba(15, 23, 42, 0.08);
+  --nav-shadow-scrolled: 0 12px 40px rgba(15, 23, 42, 0.12);
+
+  --trust-strip-bg: #ffffff;
+  --stat-label-color: #64748b;
+  --stat-divider-color: rgba(15, 23, 42, 0.1);
+
+  --philosophy-muted: rgba(15, 23, 42, 0.28);
+  --philosophy-bright: rgba(15, 23, 42, 0.92);
+  --pinned-title-color: rgba(15, 23, 42, 0.045);
+
+  --overlay-subtle: rgba(15, 23, 42, 0.04);
+  --overlay-medium: rgba(15, 23, 42, 0.07);
+  --overlay-strong: rgba(15, 23, 42, 0.1);
+
+  --panel-bg: rgba(255, 255, 255, 0.95);
+  --panel-bg-soft: rgba(238, 242, 248, 0.9);
+
+  --shadow-sm: 0 2px 8px rgba(15, 23, 42, 0.06);
+  --shadow-md: 0 4px 24px rgba(15, 23, 42, 0.08);
+  --shadow-lg: 0 8px 48px rgba(15, 23, 42, 0.1);
+
+  --hero-gradient-start: #5b21b6;
+  --hero-gradient-mid: #7c3aed;
+  --hero-gradient-end: #0891b2;
+
+  --backdrop: rgba(15, 23, 42, 0.45);
+  --selection-fg: #ffffff;
+}
+
+/* ─── Dark theme ────────────────────────────────────────────────── */
+[data-theme="dark"] {
+  color-scheme: dark;
+
   --bg-base:     #0a0a0f;
   --bg-surface:  #111118;
   --bg-elevated: #1a1a2e;
 
-  --primary:       #7c3aed;
   --primary-light: #a855f7;
   --primary-dim:   rgba(124, 58, 237, 0.15);
   --primary-glow:  rgba(124, 58, 237, 0.35);
@@ -14,14 +85,12 @@
   --accent-dim:   rgba(6, 182, 212, 0.15);
   --accent-glow:  rgba(6, 182, 212, 0.35);
 
-  --orange:      #ea580c;
   --orange-light:#f97316;
   --orange-dim:  rgba(234, 88, 12, 0.15);
   --orange-glow: rgba(234, 88, 12, 0.35);
 
   --green:  #10b981;
   --amber:  #f59e0b;
-  --slate:  #64748b;
 
   --text-primary:   #f1f5f9;
   --text-secondary: #94a3b8;
@@ -31,8 +100,41 @@
   --border-soft:   rgba(255, 255, 255, 0.12);
 
   --glass-bg:   rgba(17, 17, 24, 0.72);
-  --glass-blur: blur(20px) saturate(160%);
 
+  --nav-bg: rgba(10, 10, 15, 0.72);
+  --nav-bg-scrolled: rgba(10, 10, 15, 0.92);
+  --nav-shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
+  --nav-shadow-scrolled: 0 12px 40px rgba(0, 0, 0, 0.45);
+
+  --trust-strip-bg: #f8fafc;
+  --stat-label-color: #64748b;
+  --stat-divider-color: rgba(15, 23, 42, 0.12);
+
+  --philosophy-muted: rgba(241, 245, 249, 0.2);
+  --philosophy-bright: rgba(241, 245, 249, 0.95);
+  --pinned-title-color: rgba(255, 255, 255, 0.035);
+
+  --overlay-subtle: rgba(255, 255, 255, 0.04);
+  --overlay-medium: rgba(255, 255, 255, 0.08);
+  --overlay-strong: rgba(255, 255, 255, 0.1);
+
+  --panel-bg: rgba(17, 17, 24, 0.85);
+  --panel-bg-soft: rgba(17, 17, 24, 0.68);
+
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 24px rgba(0, 0, 0, 0.45);
+  --shadow-lg: 0 8px 48px rgba(0, 0, 0, 0.5);
+
+  --hero-gradient-start: #1a0a3e;
+  --hero-gradient-mid: #3b1d8e;
+  --hero-gradient-end: #0891b2;
+
+  --backdrop: rgba(0, 0, 0, 0.75);
+  --selection-fg: #ffffff;
+}
+
+/* ─── Shared tokens ─────────────────────────────────────────────── */
+:root {
   --sp-1: 0.25rem;  --sp-2: 0.5rem;   --sp-3: 0.75rem;
   --sp-4: 1rem;     --sp-5: 1.25rem;  --sp-6: 1.5rem;
   --sp-8: 2rem;     --sp-10: 2.5rem;  --sp-12: 3rem;
@@ -43,10 +145,6 @@
 
   --r-sm:   6px;  --r-md: 10px;  --r-lg: 16px;  --r-xl: 24px;  --r-full: 9999px;
 
-  --shadow-sm: 0 2px 8px rgba(0,0,0,0.3);
-  --shadow-md: 0 4px 24px rgba(0,0,0,0.45);
-  --shadow-lg: 0 8px 48px rgba(0,0,0,0.5);
-
   --t-fast: 0.15s ease;
   --t-base: 0.25s ease;
   --t-slow: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
@@ -55,10 +153,6 @@
   --z-base: 1;
   --z-nav: 100;
   --z-modal: 200;
-
-  --hero-gradient-start: #1a0a3e;
-  --hero-gradient-mid: #3b1d8e;
-  --hero-gradient-end: #0891b2;
 }
 
 /* ─── Reset ─────────────────────────────────────────────────────── */
@@ -82,6 +176,7 @@ body {
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  transition: background-color var(--t-base), color var(--t-base);
 }
 
 img, svg, video { display: block; max-width: 100%; }
@@ -91,7 +186,7 @@ ul, ol { list-style: none; }
 h1, h2, h3, h4, h5, h6 { margin: 0; font-weight: 600; color: var(--text-primary); }
 p { margin: 0; }
 
-::selection { background: var(--primary); color: #fff; }
+::selection { background: var(--primary); color: var(--selection-fg); }
 
 :focus-visible {
   outline: 2px solid var(--primary);
@@ -108,6 +203,6 @@ dialog {
 }
 
 dialog::backdrop {
-  background: rgba(0,0,0,0.75);
+  background: var(--backdrop);
   backdrop-filter: blur(4px);
 }

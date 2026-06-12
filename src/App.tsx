@@ -8,6 +8,8 @@ import {
   useCallback,
 } from "react";
 import "./styles/App.css";
+import { useScrollEffects } from "./hooks/useScrollEffects";
+import { useTheme } from "./hooks/useTheme";
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 type WorkflowStatus = "active" | "in-progress" | "archived";
@@ -36,49 +38,6 @@ interface WorkflowItem {
   images?: string[]; // paths relative to /public, e.g. "/images/workflows/wf-001-canvas.png"
 }
 
-// ─── Particles Config ────────────────────────────────────────────────────────
-const PARTICLES_CONFIG = {
-  background: { color: { value: "transparent" } },
-  fpsLimit: 60,
-  interactivity: {
-    events: { onHover: { enable: true, mode: "repulse" }, resize: true },
-    modes: {
-      repulse: {
-        distance: 100,
-        duration: 0.4,
-        factor: 4,
-        speed: 0.5,
-        maxSpeed: 50,
-      },
-    },
-  },
-  particles: {
-    color: { value: ["#7c3aed", "#06b6d4", "#a855f7", "#22d3ee"] },
-    links: {
-      color: "#7c3aed",
-      distance: 140,
-      enable: true,
-      opacity: 0.18,
-      width: 1,
-    },
-    move: {
-      direction: "none",
-      enable: true,
-      outModes: { default: "bounce" },
-      random: true,
-      speed: 0.5,
-    },
-    number: { density: { enable: true, area: 1000 }, value: 70 },
-    opacity: {
-      value: { min: 0.15, max: 0.4 },
-      animation: { enable: true, speed: 0.8, sync: false },
-    },
-    shape: { type: "circle" },
-    size: { value: { min: 1, max: 2.5 } },
-  },
-  detectRetina: true,
-};
-
 // ─── Utilities ───────────────────────────────────────────────────────────────
 const TECH_CLASS_MAP: Record<string, string> = {
   n8n: "tb-n8n",
@@ -94,6 +53,13 @@ const TECH_CLASS_MAP: Record<string, string> = {
   airtable: "tb-airtable",
   shopify: "tb-shopify",
   notion: "tb-notion",
+  hubspot: "tb-hubspot",
+  apollo: "tb-apollo",
+  clay: "tb-clay",
+  instantly: "tb-instantly",
+  "make.com": "tb-make",
+  twilio: "tb-twilio",
+  sendgrid: "tb-sendgrid",
 };
 
 function getTechClass(tech: string): string {
@@ -133,119 +99,136 @@ function animateCounter(el: HTMLElement) {
 
 // ─── Static Data ─────────────────────────────────────────────────────────────
 const navLinks = [
-  { label: "Services", href: "#services" },
+  { label: "Systems", href: "#services" },
   { label: "Process", href: "#process" },
-  { label: "Use cases", href: "#use-cases" },
-  { label: "Workflows", href: "#workflows" },
-  { label: "Demos", href: "#demos" },
+  { label: "Case studies", href: "#workflows" },
+  { label: "Stack", href: "#stack" },
   { label: "FAQ", href: "#faq" },
 ];
 
 const heroStats = [
-  { target: 40, suffix: "%", label: "More booked appointments" },
+  { target: 40, suffix: "%", label: "More booked calls" },
+  { target: 5, suffix: "x", label: "Outbound efficiency" },
   { target: 3, suffix: "min", label: "Avg. follow-up time" },
-  { target: 95, suffix: "%", label: "First-call capture rate" },
   { target: 12, suffix: "hrs", label: "Saved per week" },
 ];
 
 const techLogos = [
+  { name: "Apollo", color: "#6366f1" },
+  { name: "HubSpot", color: "#f97316" },
   { name: "n8n", color: "#ea580c" },
+  { name: "Clay", color: "#22c55e" },
+  { name: "Instantly", color: "#3b82f6" },
   { name: "Python", color: "#3b82f6" },
   { name: "Claude API", color: "#7c3aed" },
-  { name: "Retell AI", color: "#06b6d4" },
-  { name: "HubSpot", color: "#f97316" },
-  { name: "Cal.com", color: "#a855f7" },
-  { name: "Twilio", color: "#ef4444" },
-  { name: "Gmail", color: "#ef4444" },
-  { name: "SendGrid", color: "#34d399" },
-  { name: "Anthropic", color: "#a855f7" },
-  { name: "Slack", color: "#e879f9" },
   { name: "Airtable", color: "#fbbf24" },
+  { name: "Twilio", color: "#ef4444" },
+  { name: "SendGrid", color: "#34d399" },
+  { name: "Slack", color: "#e879f9" },
+  { name: "Make.com", color: "#a855f7" },
 ];
 
 const highlights = [
   {
-    icon: "📞",
-    title: "AI Receptionists",
+    num: "01",
+    title: "Outbound Email Infrastructure",
     description:
-      "Capture every call with custom voice agents that book appointments, answer FAQs, and hand off warm leads.",
+      "Cold email systems built to generate consistent conversations with qualified prospects through scalable multi-step outreach.",
   },
   {
-    icon: "📤",
-    title: "Outbound Outreach",
+    num: "02",
+    title: "LinkedIn Pipeline System",
     description:
-      "Launch compliant cold-calling and emailing bots that introduce your brand and qualify interest automatically.",
+      "LinkedIn workflows designed to start conversations with decision-makers and turn engagement into booked meetings.",
   },
   {
-    icon: "🔄",
-    title: "Follow-up Automations",
+    num: "03",
+    title: "Lead Intelligence & Enrichment",
     description:
-      "Keep prospects engaged with smart reminders, AI-drafted replies, and seamless CRM updates.",
+      "Automated sourcing and enrichment that continuously identifies, verifies, and qualifies high-intent prospects.",
   },
-];
-
-const metrics = [
-  { value: "24/7", label: "Availability for voice and chat concierge" },
-  { value: "3 min", label: "Average lead follow-up time after go-live" },
-  { value: "40%", label: "Typical boost in booked appointments" },
+  {
+    num: "04",
+    title: "Appointment Conversion System",
+    description:
+      "Booking and follow-up workflows that turn interested prospects into confirmed sales calls.",
+  },
+  {
+    num: "05",
+    title: "CRM & Revenue Operations",
+    description:
+      "Centralized CRM systems that automate lead tracking, follow-ups, pipeline visibility, and reporting.",
+  },
+  {
+    num: "06",
+    title: "Cold Calling Infrastructure",
+    description:
+      "Structured calling systems with scripts, qualification flows, tracking, and appointment-setting built in.",
+  },
 ];
 
 const steps = [
   {
     id: "01",
-    label: "Script and Scope",
+    label: "GTM Audit & Mapping",
     detail:
-      "We capture your tone, document handoffs, and identify the calls, chats, or emails that AI should handle first.",
+      "We review your current outbound process, offer positioning, lead sources, and conversion gaps.",
   },
   {
     id: "02",
-    label: "Build and Train",
+    label: "Infrastructure Buildout",
     detail:
-      "Your agent learns from real conversations, plugs into your calendar or CRM, and passes compliance checks.",
+      "We configure workflows, tooling, outreach systems, integrations, and tracking architecture.",
   },
   {
     id: "03",
-    label: "Launch and Optimize",
+    label: "Launch & Optimization",
     detail:
-      "Go live with monitoring, analytics, and rapid updates that keep your automations sharp as your business evolves.",
+      "After deployment, we monitor deliverability, outreach performance, conversion quality, and efficiency.",
+  },
+  {
+    id: "04",
+    label: "Scale & Iterate",
+    detail:
+      "We refine sequences, expand channels, and tighten reporting so pipeline stays predictable as you grow.",
   },
 ];
 
 const useCases = [
   {
-    title: "24/7 AI front desk",
+    title: "Outbound email engine",
     summary:
-      "Voice agents answer every call, collect details, and book time right on your calendar.",
-    outcome: "Captures 95% of first-time callers even after hours.",
-    category: "Service businesses",
+      "Multi-step cold email infrastructure with deliverability monitoring, personalization, and reply routing.",
+    outcome: "Adds 40% more booked calls from outbound alone.",
+    category: "B2B services",
     highlights: [
-      "Appointment booking",
-      "Instant FAQ responses",
-      "Warm transfer to staff",
+      "Domain warmup & inbox rotation",
+      "ICP-based personalization",
+      "CRM sync on every reply",
     ],
   },
   {
-    title: "Outbound follow-up sequences",
+    title: "LinkedIn pipeline system",
     summary:
-      "Automate cold calls, texts, and emails that introduce your offer and re-activate old leads.",
-    outcome: "Adds 18% more consults from stale inquiries.",
-    category: "Home services",
+      "Automated connection requests, follow-ups, and meeting prompts aligned to your sales motion.",
+    outcome: "Turns engagement into 3–5x more qualified conversations.",
+    category: "Agencies",
     highlights: [
-      "Local caller ID dialing",
-      "Script variations by lead source",
-      "CRM and pipeline updates",
+      "Decision-maker targeting",
+      "Multi-touch sequences",
+      "Meeting booking handoff",
     ],
   },
   {
-    title: "Prospect qualification inbox",
+    title: "Revenue operations layer",
     summary:
-      "AI triages inbound emails and chats, drafts replies, and alerts your team when a human touch is needed.",
-    outcome: "Saves 12 hours of manual inbox work each week.",
-    category: "Professional services",
+      "HubSpot or CRM automation that enriches leads, scores fit, and triggers the right nurture or sales sequence.",
+    outcome: "Saves 12 hours of manual pipeline work each week.",
+    category: "SaaS & professional services",
     highlights: [
-      "Lead scoring prompts",
-      "Calendar scheduling links",
-      "Compliance-ready conversation logs",
+      "Lead scoring & enrichment",
+      "Pipeline visibility",
+      "Automated follow-up rules",
     ],
   },
 ];
@@ -392,34 +375,46 @@ const workflows: WorkflowItem[] = [
 
 const demos = [
   {
-    title: "AI Receptionist Call Flow",
+    title: "Cold Email Infrastructure Walkthrough",
     description:
-      "Hear how our concierge greets callers, captures lead info, and routes urgent conversations to your team.",
-    length: "02:08",
-    category: "Voice",
-  },
-  {
-    title: "Outbound Email Bot Walkthrough",
-    description:
-      "See the multi-touch campaigns that warm up cold prospects with personalized copy that sounds like you.",
+      "See how multi-step outbound sequences, deliverability checks, and reply routing work as one system.",
     length: "03:05",
     category: "Email",
   },
   {
-    title: "Lead Follow-up Dashboard",
+    title: "LinkedIn Pipeline Demo",
     description:
-      "Track every outreach step, review transcripts, and trigger human follow-ups in one place.",
+      "Watch decision-maker outreach, follow-up timing, and meeting handoffs run without manual busywork.",
+    length: "02:08",
+    category: "LinkedIn",
+  },
+  {
+    title: "GTM Ops Dashboard",
+    description:
+      "Track pipeline health, sequence performance, and conversion quality in one revenue operations view.",
     length: "01:47",
-    category: "Operations",
+    category: "RevOps",
   },
 ];
 
 const testimonials = [
   {
     quote:
-      "Our AI receptionist books jobs while we are on-site. Weekend calls no longer slip through the cracks.",
-    author: "Ali Sulaiman",
-    role: "CEO",
+      "Our outbound finally became consistent. We're booking meetings every week without relying on manual follow-ups.",
+    author: "Founder",
+    role: "B2B Services Company",
+  },
+  {
+    quote:
+      "The system replaced three tools and half our outreach workload. Pipeline visibility improved immediately.",
+    author: "Head of Growth",
+    role: "SaaS Startup",
+  },
+  {
+    quote:
+      "We went from random lead generation to a structured outbound engine. It completely changed our sales process.",
+    author: "Agency Owner",
+    role: "Outbound Agency",
   },
 ];
 
@@ -431,24 +426,29 @@ const contactChannels = [
 
 const faqs = [
   {
+    question: "How customized are the systems?",
+    answer:
+      "Everything is built around your current workflow, offer, sales process, and tooling. We don't ship generic playbooks.",
+  },
+  {
+    question: "Can these systems integrate with our existing CRM?",
+    answer:
+      "Yes. Most systems are designed to work alongside HubSpot, Salesforce, Pipedrive, and custom CRM workflows.",
+  },
+  {
+    question: "Do you only work with agencies?",
+    answer:
+      "No. We work with agencies, service businesses, and B2B teams that rely on outbound pipeline generation.",
+  },
+  {
+    question: "Is this done-for-you or collaborative?",
+    answer:
+      "Typically a mix of both. We handle the infrastructure build while staying aligned with your team on messaging, ICP, and handoffs.",
+  },
+  {
     question: "How fast can we launch?",
     answer:
-      "Most teams go live within 2 to 4 weeks. We map your scripts, train the AI with real conversations, and run a live pilot before rolling out to every lead source.",
-  },
-  {
-    question: "Will the AI match our tone?",
-    answer:
-      "Yes. We build a brand style guide for every agent and fine-tune responses until they sound like a natural extension of your team, including pronunciations and local knowledge.",
-  },
-  {
-    question: "What does the monthly retainer include?",
-    answer:
-      "You get proactive tuning, analytics reviews, new script updates, and priority support. We monitor performance weekly and adjust sequences before issues surface.",
-  },
-  {
-    question: "Can you connect to our systems?",
-    answer:
-      "We integrate with popular CRMs, booking tools, and phone providers. If you have a custom stack, we use APIs or secure no-code connectors to make sure data flows cleanly.",
+      "Most outbound systems go live within 2 to 4 weeks after audit and architecture sign-off.",
   },
 ];
 
@@ -539,21 +539,8 @@ function App() {
 
   const closeModal = useCallback(() => setModalWorkflow(null), []);
 
-  // Particles
-  useEffect(() => {
-    const init = async () => {
-      const tsP = (window as any).tsParticles;
-      if (!tsP) return;
-      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-      try {
-        await tsP.load("tsparticles", PARTICLES_CONFIG);
-      } catch (e) {
-        console.warn("tsParticles:", e);
-      }
-    };
-    const t = setTimeout(init, 300);
-    return () => clearTimeout(t);
-  }, []);
+  const { theme, toggleTheme } = useTheme();
+  useScrollEffects(theme);
 
   // AOS
   useEffect(() => {
@@ -670,7 +657,7 @@ function App() {
     (async () => {
       const cal = await getCalApi({ namespace: "30min" });
       cal("ui", {
-        theme: "dark",
+        theme,
         cssVarsPerTheme: {
           light: { "cal-brand": "#7c3aed" },
           dark: { "cal-brand": "#7c3aed" },
@@ -679,7 +666,7 @@ function App() {
         layout: "month_view",
       });
     })();
-  }, []);
+  }, [theme]);
 
   // Lightbox wheel zoom — attach to document so dialog/panel scroll can't intercept
   useEffect(() => {
@@ -721,16 +708,13 @@ function App() {
 
   return (
     <>
-      {/* Particles */}
-      <div id="tsparticles" />
-
       {/* Navigation */}
       <nav className="nav" ref={navRef} id="nav">
         <div className="nav-inner">
           <a
             href="#"
             className="nav-logo"
-            aria-label="Aureli Automation Labs Home"
+            aria-label="Aureli Consulting Home"
           >
             <svg
               className="logo-icon"
@@ -762,8 +746,26 @@ function App() {
                 {label}
               </a>
             ))}
+            <button
+              type="button"
+              className="theme-toggle"
+              onClick={toggleTheme}
+              aria-label={theme === "light" ? "Switch to dark mode" : "Switch to light mode"}
+              title={theme === "light" ? "Dark mode" : "Light mode"}
+            >
+              {theme === "light" ? (
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
+                  <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+                </svg>
+              ) : (
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
+                  <circle cx="12" cy="12" r="5" />
+                  <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" />
+                </svg>
+              )}
+            </button>
             <a href="#contact" className="btn btn-primary btn-sm">
-              Book a consult
+              Book GTM audit
             </a>
           </div>
         </div>
@@ -777,27 +779,29 @@ function App() {
         <div className="hero-content" data-reveal>
           <div className="hero-badge">
             <span className="hero-badge-dot" />
-            <span>AI automation for local businesses</span>
+            <span>GTM infrastructure for outbound teams</span>
           </div>
 
           <h1 className="hero-title">
-            Generate more{" "}
-            <span className="hero-word-blur gradient-text" data-text="leads">
-              leads
+            We build{" "}
+            <span className="hero-word-blur gradient-text" data-text="outbound">
+              outbound
             </span>
-            .
             <br />
-            Make more{" "}
-            <span className="hero-word-blur gradient-text" data-text="money">
-              money
-            </span>
-            .
+            and{" "}
+            <span className="hero-word-blur gradient-text" data-text="GTM">
+              GTM
+            </span>{" "}
+            systems.
           </h1>
 
           <p className="hero-subtitle">
-            Aureli builds branded voice and chat automations that answer every
-            inquiry, qualify leads, and keep your team focused on the work that
-            matters.
+            Cold email, LinkedIn outreach, lead generation, and CRM automation —
+            designed for scaling revenue, not activity.
+          </p>
+          <p className="hero-subline">
+            Aureli designs and deploys the infrastructure behind modern outbound
+            so your pipeline flows predictably.
           </p>
 
           <div className="hero-cta">
@@ -813,7 +817,7 @@ function App() {
               >
                 <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
               </svg>
-              Start your AI concierge plan
+              Book GTM audit
             </a>
             <a href="#workflows" className="btn btn-ghost btn-ghost--light">
               <svg
@@ -828,7 +832,7 @@ function App() {
                 <circle cx="12" cy="12" r="3" />
                 <path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83" />
               </svg>
-              View workflows
+              View systems
             </a>
           </div>
         </div>
@@ -859,9 +863,37 @@ function App() {
         </div>
       </section>
 
+      {/* Video + About */}
+      <section className="about-video" id="about" data-reveal>
+        <div className="about-video__media">
+          <img
+            src="/images/workflows/workflow.png"
+            alt="Outbound infrastructure workflow preview"
+            className="about-video__poster"
+            loading="lazy"
+          />
+          <div className="about-video__overlay" aria-hidden="true" />
+          <button type="button" className="about-video__play" aria-label="Play overview">
+            <span>▶</span>
+          </button>
+        </div>
+        <div className="about-video__copy">
+          <span className="section__eyebrow">Who we are</span>
+          <h2 className="about-video__title">
+            We design outbound infrastructure — not one-off campaigns.
+          </h2>
+          <p className="about-video__desc">
+            From cold email and LinkedIn workflows to lead enrichment, CRM
+            automation, and appointment-setting systems — we build GTM
+            infrastructure that keeps prospecting, outreach, follow-ups, and
+            booking working as one connected operation.
+          </p>
+        </div>
+      </section>
+
       {/* Tech Strip */}
-      <section className="tech-strip" aria-label="Technologies used">
-        <p className="tech-strip-label">Built with</p>
+      <section className="tech-strip" id="stack" aria-label="GTM stack">
+        <p className="tech-strip-label">Stack we deploy</p>
         <div className="tech-scroll-wrapper">
           <div className="tech-scroll">
             {[...techLogos, ...techLogos].map((t, i) => (
@@ -883,56 +915,42 @@ function App() {
       {/* Philosophy — brief impact statement */}
       <section className="philosophy" id="philosophy" data-reveal>
         <p className="philosophy__text">
-          Missed calls aren&apos;t a staffing problem.
+          Outbound isn&apos;t a campaign.
           <br />
-          They&apos;re an{" "}
+          It&apos;s{" "}
           <span className="philosophy__accent gradient-text">
             infrastructure
-          </span>{" "}
-          problem.
+          </span>
+          .
         </p>
       </section>
 
       <main>
-        {/* Metrics */}
-        <section className="section section--metrics">
-          <div className="metrics">
-            {metrics.map(({ value, label }) => (
-              <div className="metric" data-reveal key={label}>
-                <span className="metric__value">{value}</span>
-                <span className="metric__label">{label}</span>
-              </div>
-            ))}
-          </div>
-        </section>
-
         {/* Services */}
         <section className="section pinned-section" id="services">
           <div className="pinned-section__title" aria-hidden="true">
-            Services
+            Systems
           </div>
           <div className="pinned-section__content">
             <div className="section__header" data-reveal>
-              <span className="section__eyebrow">Services</span>
+              <span className="section__eyebrow">What we build</span>
               <h2 className="section__title">
-                Services that keep every lead moving forward
+                Core systems that power predictable pipeline
               </h2>
               <p className="section__subtitle">
-                Comprehensive AI automation solutions designed specifically for
-                local businesses
+                Each system is designed to remove operational bottlenecks and
+                create a more predictable outbound process.
               </p>
             </div>
-            <div className="grid grid--stagger">
-              {highlights.map(({ icon, title, description }, i) => (
+            <div className="grid grid--systems">
+              {highlights.map(({ num, title, description }) => (
                 <article
                   className="card card--rise"
-                  data-reveal
                   key={title}
                   data-aos="fade-up"
-                  style={{ transitionDelay: `${i * 100}ms` }}
                 >
-                  <span className="card__icon" aria-hidden="true">
-                    {icon}
+                  <span className="card__num" aria-hidden="true">
+                    {num}
                   </span>
                   <h3>{title}</h3>
                   <p>{description}</p>
@@ -949,12 +967,11 @@ function App() {
           </div>
           <div className="pinned-section__content">
             <div className="section__header" data-reveal>
-              <span className="section__eyebrow">Our Process</span>
-              <h2 className="section__title">How we launch your AI concierge</h2>
+              <span className="section__eyebrow">How it works</span>
+              <h2 className="section__title">How deployment works</h2>
               <p className="section__subtitle">
-                We blend automation expertise with local business know-how so
-                your agent sounds authentic and delivers measurable impact from
-                the very first week.
+                Every outbound system is built around your offer, sales process,
+                and operational workflow.
               </p>
             </div>
             <div className="timeline timeline--vertical">
@@ -974,13 +991,13 @@ function App() {
         {/* Use Cases */}
         <section className="section section--cases" id="use-cases">
           <div className="section__header" data-reveal>
-            <span className="section__eyebrow">Use Cases</span>
+            <span className="section__eyebrow">Use cases</span>
             <h2 className="section__title">
-              Popular automations for local teams
+              Outbound systems in production
             </h2>
             <p className="section__subtitle">
-              From inbound calls to outbound campaigns, we tailor every workflow
-              to the systems you already rely on and the customers you serve.
+              From cold email to LinkedIn and RevOps — we tailor every workflow
+              to the pipeline motion you need to scale.
             </p>
           </div>
           <div className="case-grid">
@@ -1013,22 +1030,21 @@ function App() {
           id="workflows"
         >
           <div className="pinned-section__title" aria-hidden="true">
-            Workflows
+            Case studies
           </div>
           <div className="pinned-section__content">
           <div className="section-header" data-reveal>
             <div className="section-eyebrow ai-eyebrow">
               <span className="eyebrow-dot" />
-              Workflow Portfolio
+              Case studies
             </div>
             <h2 className="section-title">
-              Built pipelines, not just{" "}
+              Built infrastructure, not just{" "}
               <span className="gradient-text">promises</span>
             </h2>
             <p className="section-desc">
-              Real n8n flows and agentic Python scripts powering lead capture,
-              outreach, and operations — the kind of work that runs while you
-              sleep.
+              Real outbound pipelines — n8n workflows and Python agents powering
+              prospecting, enrichment, and revenue operations.
             </p>
           </div>
 
@@ -1176,11 +1192,11 @@ function App() {
         {/* Demos */}
         <section className="section section--demos" id="demos">
           <div className="section__header" data-reveal>
-            <span className="section__eyebrow">Demos</span>
-            <h2 className="section__title">Sample conversations</h2>
+            <span className="section__eyebrow">Walkthroughs</span>
+            <h2 className="section__title">See the systems in action</h2>
             <p className="section__subtitle">
-              Preview how our agents greet callers, nurture leads, and keep your
-              team in the loop with transcripts and alerts.
+              Preview how outbound infrastructure handles prospecting, sequences,
+              and pipeline updates end to end.
             </p>
           </div>
           <div className="demo-grid">
@@ -1226,22 +1242,24 @@ function App() {
           <div className="pinned-section__content">
             <div className="section__header" data-reveal>
               <span className="section__eyebrow">Testimonials</span>
-              <h2 className="section__title">Results from local teams</h2>
+              <h2 className="section__title">Built for teams that need predictable pipeline</h2>
               <p className="section__subtitle">
-                Hear from owners who put Aureli on the front lines of customer
-                conversations and grew without hiring more staff.
+                We don&apos;t optimize clicks or impressions — we build systems
+                that generate revenue conversations.
               </p>
             </div>
-            <div className="testimonial-track" data-reveal>
-              {testimonials.map(({ quote, author, role }) => (
-                <figure className="testimonial" key={author}>
-                  <blockquote>&ldquo;{quote}&rdquo;</blockquote>
-                  <figcaption>
-                    <span className="testimonial__author">{author}</span>
-                    <span className="testimonial__role">{role}</span>
-                  </figcaption>
-                </figure>
-              ))}
+            <div className="testimonial-pin" data-reveal>
+              <div className="testimonial-pin__track">
+                {testimonials.map(({ quote, author, role }) => (
+                  <figure className="testimonial" key={`${author}-${role}`}>
+                    <blockquote>&ldquo;{quote}&rdquo;</blockquote>
+                    <figcaption>
+                      <span className="testimonial__author">{author}</span>
+                      <span className="testimonial__role">{role}</span>
+                    </figcaption>
+                  </figure>
+                ))}
+              </div>
             </div>
           </div>
         </section>
@@ -1249,13 +1267,13 @@ function App() {
         {/* Contact */}
         <section className="section section--contact" id="contact">
           <div className="contact__content" data-reveal>
-            <span className="contact__tag">Let's build together</span>
+            <span className="contact__tag">Book a GTM audit</span>
             <h2 className="section__title">
-              Tell us about the calls or campaigns you need covered
+              Tell us about the outbound motion you need to scale
             </h2>
             <p className="section__subtitle">
-              Share the conversations you want automated and we will send back a
-              tailored roadmap with next steps within two business days.
+              Share your current pipeline gaps and we&apos;ll send back a
+              tailored infrastructure roadmap within two business days.
             </p>
             <ul className="contact__channels">
               {contactChannels.map(({ label, detail }) => (
@@ -1272,10 +1290,10 @@ function App() {
           </div>
           <div className="contact__form" data-reveal>
             <div className="contact__scheduler-intro">
-              <span className="contact__label">Book a working session</span>
+              <span className="contact__label">Book a strategy session</span>
               <p className="contact__subtitle">
-                Grab time on our calendar for a 30-minute discovery call. We'll
-                review your scripts, tooling, and automation goals live.
+                Grab time on our calendar for a 30-minute GTM audit. We&apos;ll
+                review your outbound process, tooling, and pipeline goals live.
               </p>
               <p className="form__hint">
                 Prefer a new tab?{" "}
@@ -1298,7 +1316,7 @@ function App() {
                 namespace="30min"
                 calLink="ali-sulaiman-b2yeyp/30min"
                 style={{ width: "100%", height: "100%", overflow: "scroll" }}
-                config={{ layout: "month_view", theme: "dark" }}
+                config={{ layout: "month_view", theme }}
               />
             </div>
           </div>
@@ -1308,9 +1326,10 @@ function App() {
         <section className="section section--faq" id="faq">
           <div className="section__header" data-reveal>
             <span className="section__eyebrow">FAQ</span>
-            <h2 className="section__title">Questions before you launch</h2>
+            <h2 className="section__title">Questions before you deploy</h2>
             <p className="section__subtitle">
-              Get clear on how Aureli's AI concierge works before you invest.
+              Get clear on how Aureli&apos;s GTM infrastructure works before you
+              invest.
             </p>
           </div>
           <div className="faq">
@@ -1329,19 +1348,19 @@ function App() {
         <div className="final-cta__glow" aria-hidden="true" />
         <div className="final-cta__inner">
           <h2 className="final-cta__title">
-            Build a predictable AI concierge for your business
+            Build a predictable outbound system for your business
           </h2>
           <p className="final-cta__subtitle">
-            Stop relying on inconsistent follow-ups and missed calls. We design
-            automation infrastructure that turns every inquiry into a booked
-            conversation.
+            Stop relying on inconsistent outreach and fragmented tools. We design
+            GTM infrastructure that turns outbound into a repeatable revenue
+            engine.
           </p>
           <div className="hero-cta">
             <a href="#contact" className="btn btn-primary btn-lg">
-              Book a consult
+              Book GTM audit
             </a>
-            <a href="#workflows" className="btn btn-ghost">
-              View workflows
+            <a href="#services" className="btn btn-ghost">
+              View systems
             </a>
           </div>
         </div>
@@ -1356,7 +1375,7 @@ function App() {
                 Aureli<span className="logo-accent"> </span>Consulting
               </span>
               <p className="footer-tagline">
-                AI automation for local businesses.
+                GTM infrastructure for outbound teams.
               </p>
             </div>
             <nav className="footer-links" aria-label="Footer navigation">
@@ -1371,9 +1390,9 @@ function App() {
           <div className="footer-bottom">
             <p>
               Built with <span className="tech-pill">n8n</span>{" "}
-              <span className="tech-pill">Python</span>{" "}
-              <span className="tech-pill">Claude API</span>{" "}
-              <span className="tech-pill">Retell AI</span>
+              <span className="tech-pill">HubSpot</span>{" "}
+              <span className="tech-pill">Apollo</span>{" "}
+              <span className="tech-pill">Clay</span>
             </p>
             <p style={{ marginTop: "0.5rem" }}>
               &copy; {currentYear} Aureli Automation Labs. All rights reserved.

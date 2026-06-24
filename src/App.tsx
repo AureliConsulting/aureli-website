@@ -711,11 +711,7 @@ function App() {
       {/* Navigation */}
       <nav className="nav" ref={navRef} id="nav">
         <div className="nav-inner">
-          <a
-            href="#"
-            className="nav-logo"
-            aria-label="Aureli Consulting Home"
-          >
+          <a href="#" className="nav-logo" aria-label="Aureli Consulting Home">
             <svg
               className="logo-icon"
               width="22"
@@ -750,15 +746,31 @@ function App() {
               type="button"
               className="theme-toggle"
               onClick={toggleTheme}
-              aria-label={theme === "light" ? "Switch to dark mode" : "Switch to light mode"}
+              aria-label={
+                theme === "light"
+                  ? "Switch to dark mode"
+                  : "Switch to light mode"
+              }
               title={theme === "light" ? "Dark mode" : "Light mode"}
             >
               {theme === "light" ? (
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  aria-hidden="true"
+                >
                   <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
                 </svg>
               ) : (
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  aria-hidden="true"
+                >
                   <circle cx="12" cy="12" r="5" />
                   <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" />
                 </svg>
@@ -792,12 +804,12 @@ function App() {
             <span className="hero-word-blur gradient-text" data-text="GTM">
               GTM
             </span>{" "}
-            systems.
+            capabilities that provide consistent pipeline flow.
           </h1>
 
           <p className="hero-subtitle">
-            Cold email, LinkedIn outreach, lead generation, and CRM automation —
-            designed for scaling revenue, not activity.
+            Cold email, LinkedIn outreach, lead generation, and CRM automation;
+            designed for scaling revenues, not activity.
           </p>
           <p className="hero-subline">
             Aureli designs and deploys the infrastructure behind modern outbound
@@ -817,7 +829,7 @@ function App() {
               >
                 <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
               </svg>
-              Book GTM audit
+              Book Audit Now
             </a>
             <a href="#workflows" className="btn btn-ghost btn-ghost--light">
               <svg
@@ -873,7 +885,11 @@ function App() {
             loading="lazy"
           />
           <div className="about-video__overlay" aria-hidden="true" />
-          <button type="button" className="about-video__play" aria-label="Play overview">
+          <button
+            type="button"
+            className="about-video__play"
+            aria-label="Play overview"
+          >
             <span>▶</span>
           </button>
         </div>
@@ -992,9 +1008,7 @@ function App() {
         <section className="section section--cases" id="use-cases">
           <div className="section__header" data-reveal>
             <span className="section__eyebrow">Use cases</span>
-            <h2 className="section__title">
-              Outbound systems in production
-            </h2>
+            <h2 className="section__title">Outbound systems in production</h2>
             <p className="section__subtitle">
               From cold email to LinkedIn and RevOps — we tailor every workflow
               to the pipeline motion you need to scale.
@@ -1033,159 +1047,164 @@ function App() {
             Case studies
           </div>
           <div className="pinned-section__content">
-          <div className="section-header" data-reveal>
-            <div className="section-eyebrow ai-eyebrow">
-              <span className="eyebrow-dot" />
-              Case studies
+            <div className="section-header" data-reveal>
+              <div className="section-eyebrow ai-eyebrow">
+                <span className="eyebrow-dot" />
+                Case studies
+              </div>
+              <h2 className="section-title">
+                Built infrastructure, not just{" "}
+                <span className="gradient-text">promises</span>
+              </h2>
+              <p className="section-desc">
+                Real outbound pipelines — n8n workflows and Python agents
+                powering prospecting, enrichment, and revenue operations.
+              </p>
             </div>
-            <h2 className="section-title">
-              Built infrastructure, not just{" "}
-              <span className="gradient-text">promises</span>
-            </h2>
-            <p className="section-desc">
-              Real outbound pipelines — n8n workflows and Python agents powering
-              prospecting, enrichment, and revenue operations.
-            </p>
-          </div>
 
-          <div className="filter-bar" data-reveal>
-            {WORKFLOW_FILTERS.map(({ label, value }) => (
-              <button
-                key={value}
-                className={`filter-btn${activeFilter === value ? " active" : ""}`}
-                onClick={() => setActiveFilter(value)}
-              >
-                {label}
-              </button>
-            ))}
-          </div>
+            <div className="filter-bar" data-reveal>
+              {WORKFLOW_FILTERS.map(({ label, value }) => (
+                <button
+                  key={value}
+                  className={`filter-btn${activeFilter === value ? " active" : ""}`}
+                  onClick={() => setActiveFilter(value)}
+                >
+                  {label}
+                </button>
+              ))}
+            </div>
 
-          <div className="workflow-grid" role="list">
-            {filteredWorkflows.map((wf) => (
-              <article
-                key={wf.id}
-                className={`wf-card ${wf.categoryStyle}-card card-visible`}
-                role="listitem"
-                tabIndex={0}
-                aria-label={wf.title}
-                data-tilt
-                data-tilt-max="6"
-                data-tilt-speed="400"
-                data-tilt-glare="true"
-                data-tilt-max-glare="0.08"
-                onClick={() => setModalWorkflow(wf)}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter" || e.key === " ") {
-                    e.preventDefault();
-                    setModalWorkflow(wf);
-                  }
-                }}
-                data-aos="fade-up"
-              >
-                {/* Header */}
-                <div className="card-header">
-                  <div className="card-status">
-                    <span
-                      className={`status-dot ${getStatusDotClass(wf.status)}`}
-                      aria-hidden="true"
-                    />
-                    <span className="status-label">
-                      {getStatusLabel(wf.status)}
-                    </span>
-                  </div>
-                  <span
-                    className={`card-type-badge ${wf.categoryStyle === "n8n" ? "n8n-type" : wf.categoryStyle === "agent" ? "ai-type" : "hybrid-type"}`}
-                  >
-                    {wf.category}
-                  </span>
-                </div>
-
-                {/* Body */}
-                <div className="card-body">
-                  <h3 className="card-title">{wf.title}</h3>
-                  <p className="card-desc">{wf.shortDesc}</p>
-
-                  <div className="card-meta">
-                    <span className="meta-item">
-                      <svg
-                        width="12"
-                        height="12"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2"
+            <div className="workflow-grid" role="list">
+              {filteredWorkflows.map((wf) => (
+                <article
+                  key={wf.id}
+                  className={`wf-card ${wf.categoryStyle}-card card-visible`}
+                  role="listitem"
+                  tabIndex={0}
+                  aria-label={wf.title}
+                  data-tilt
+                  data-tilt-max="6"
+                  data-tilt-speed="400"
+                  data-tilt-glare="true"
+                  data-tilt-max-glare="0.08"
+                  onClick={() => setModalWorkflow(wf)}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter" || e.key === " ") {
+                      e.preventDefault();
+                      setModalWorkflow(wf);
+                    }
+                  }}
+                  data-aos="fade-up"
+                >
+                  {/* Header */}
+                  <div className="card-header">
+                    <div className="card-status">
+                      <span
+                        className={`status-dot ${getStatusDotClass(wf.status)}`}
                         aria-hidden="true"
-                      >
-                        <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
-                      </svg>
-                      {wf.triggerType}
-                    </span>
-                    <span className="meta-item">
-                      <svg
-                        width="12"
-                        height="12"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        aria-hidden="true"
-                      >
-                        <rect x="3" y="3" width="7" height="7" />
-                        <rect x="14" y="3" width="7" height="7" />
-                        <rect x="14" y="14" width="7" height="7" />
-                        <rect x="3" y="14" width="7" height="7" />
-                      </svg>
-                      {wf.stepsCount} steps
-                    </span>
-                  </div>
-
-                  <div className="card-tech">
-                    {wf.tech.map((t) => (
-                      <span key={t} className={`tech-badge ${getTechClass(t)}`}>
-                        {t}
-                      </span>
-                    ))}
-                  </div>
-
-                  <div className="complexity-bar">
-                    <div className="complexity-label-row">
-                      <span className="complexity-label-text">Complexity</span>
-                      <span className="complexity-label-pct">
-                        {wf.complexity}%
-                      </span>
-                    </div>
-                    <div className="complexity-track">
-                      <div
-                        className="complexity-fill"
-                        data-width={wf.complexity}
-                        style={{ width: 0 }}
                       />
+                      <span className="status-label">
+                        {getStatusLabel(wf.status)}
+                      </span>
+                    </div>
+                    <span
+                      className={`card-type-badge ${wf.categoryStyle === "n8n" ? "n8n-type" : wf.categoryStyle === "agent" ? "ai-type" : "hybrid-type"}`}
+                    >
+                      {wf.category}
+                    </span>
+                  </div>
+
+                  {/* Body */}
+                  <div className="card-body">
+                    <h3 className="card-title">{wf.title}</h3>
+                    <p className="card-desc">{wf.shortDesc}</p>
+
+                    <div className="card-meta">
+                      <span className="meta-item">
+                        <svg
+                          width="12"
+                          height="12"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          aria-hidden="true"
+                        >
+                          <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
+                        </svg>
+                        {wf.triggerType}
+                      </span>
+                      <span className="meta-item">
+                        <svg
+                          width="12"
+                          height="12"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          aria-hidden="true"
+                        >
+                          <rect x="3" y="3" width="7" height="7" />
+                          <rect x="14" y="3" width="7" height="7" />
+                          <rect x="14" y="14" width="7" height="7" />
+                          <rect x="3" y="14" width="7" height="7" />
+                        </svg>
+                        {wf.stepsCount} steps
+                      </span>
+                    </div>
+
+                    <div className="card-tech">
+                      {wf.tech.map((t) => (
+                        <span
+                          key={t}
+                          className={`tech-badge ${getTechClass(t)}`}
+                        >
+                          {t}
+                        </span>
+                      ))}
+                    </div>
+
+                    <div className="complexity-bar">
+                      <div className="complexity-label-row">
+                        <span className="complexity-label-text">
+                          Complexity
+                        </span>
+                        <span className="complexity-label-pct">
+                          {wf.complexity}%
+                        </span>
+                      </div>
+                      <div className="complexity-track">
+                        <div
+                          className="complexity-fill"
+                          data-width={wf.complexity}
+                          style={{ width: 0 }}
+                        />
+                      </div>
                     </div>
                   </div>
-                </div>
 
-                {/* Footer */}
-                <div className="card-footer">
-                  <button className="card-cta" type="button">
-                    View Details
-                    <svg
-                      width="14"
-                      height="14"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2.5"
-                      aria-hidden="true"
-                    >
-                      <line x1="5" y1="12" x2="19" y2="12" />
-                      <polyline points="12 5 19 12 12 19" />
-                    </svg>
-                  </button>
-                  <span className="card-steps">#{wf.id.split("-")[1]}</span>
-                </div>
-              </article>
-            ))}
-          </div>
+                  {/* Footer */}
+                  <div className="card-footer">
+                    <button className="card-cta" type="button">
+                      View Details
+                      <svg
+                        width="14"
+                        height="14"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2.5"
+                        aria-hidden="true"
+                      >
+                        <line x1="5" y1="12" x2="19" y2="12" />
+                        <polyline points="12 5 19 12 12 19" />
+                      </svg>
+                    </button>
+                    <span className="card-steps">#{wf.id.split("-")[1]}</span>
+                  </div>
+                </article>
+              ))}
+            </div>
           </div>
         </section>
 
@@ -1195,8 +1214,8 @@ function App() {
             <span className="section__eyebrow">Walkthroughs</span>
             <h2 className="section__title">See the systems in action</h2>
             <p className="section__subtitle">
-              Preview how outbound infrastructure handles prospecting, sequences,
-              and pipeline updates end to end.
+              Preview how outbound infrastructure handles prospecting,
+              sequences, and pipeline updates end to end.
             </p>
           </div>
           <div className="demo-grid">
@@ -1242,7 +1261,9 @@ function App() {
           <div className="pinned-section__content">
             <div className="section__header" data-reveal>
               <span className="section__eyebrow">Testimonials</span>
-              <h2 className="section__title">Built for teams that need predictable pipeline</h2>
+              <h2 className="section__title">
+                Built for teams that need predictable pipeline
+              </h2>
               <p className="section__subtitle">
                 We don&apos;t optimize clicks or impressions — we build systems
                 that generate revenue conversations.
@@ -1351,9 +1372,9 @@ function App() {
             Build a predictable outbound system for your business
           </h2>
           <p className="final-cta__subtitle">
-            Stop relying on inconsistent outreach and fragmented tools. We design
-            GTM infrastructure that turns outbound into a repeatable revenue
-            engine.
+            Stop relying on inconsistent outreach and fragmented tools. We
+            design GTM infrastructure that turns outbound into a repeatable
+            revenue engine.
           </p>
           <div className="hero-cta">
             <a href="#contact" className="btn btn-primary btn-lg">

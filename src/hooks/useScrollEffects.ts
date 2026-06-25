@@ -12,7 +12,7 @@ function cssVar(name: string, fallback: string) {
   return v || fallback;
 }
 
-export function useScrollEffects(theme: Theme) {
+export function useScrollEffects(theme: Theme, routeKey = "") {
   useEffect(() => {
     const prefersReduced = window.matchMedia(
       "(prefers-reduced-motion: reduce)",
@@ -98,10 +98,10 @@ export function useScrollEffects(theme: Theme) {
         );
       });
 
-      // Horizontal pinned testimonials
-      const track = document.querySelector<HTMLElement>(".testimonial-pin");
-      const trackInner = document.querySelector<HTMLElement>(".testimonial-pin__track");
-      if (track && trackInner && trackInner.scrollWidth > track.offsetWidth) {
+      // Horizontal pinned proof blocks
+      const track = document.querySelector<HTMLElement>(".proof-pin");
+      const trackInner = document.querySelector<HTMLElement>(".proof-pin__track");
+      if (!isMobile && track && trackInner && trackInner.scrollWidth > track.offsetWidth) {
         const scrollDistance = trackInner.scrollWidth - track.offsetWidth;
         gsap.to(trackInner, {
           x: -scrollDistance,
@@ -136,5 +136,5 @@ export function useScrollEffects(theme: Theme) {
       window.removeEventListener("resize", onResize);
       ctx.revert();
     };
-  }, [theme]);
+  }, [theme, routeKey]);
 }

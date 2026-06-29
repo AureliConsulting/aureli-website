@@ -6,11 +6,11 @@ import './styles/index.css'
 
 try {
   const stored = localStorage.getItem('aureli-theme')
-  const theme = stored === 'dark' ? 'dark' : 'light'
+  const theme = stored === 'light' ? 'light' : 'dark'
   document.documentElement.setAttribute('data-theme', theme)
   document.documentElement.style.colorScheme = theme
 } catch {
-  document.documentElement.setAttribute('data-theme', 'light')
+  document.documentElement.setAttribute('data-theme', 'dark')
 }
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(

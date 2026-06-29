@@ -4,9 +4,7 @@ import { Hero } from "../components/Hero";
 import { ProcessTimeline } from "../components/ProcessTimeline";
 import { SectionHeader } from "../components/SectionHeader";
 import { ServiceCard } from "../components/ServiceCard";
-import { StackStrip } from "../components/StackStrip";
 import { TrustStrip } from "../components/TrustStrip";
-import { WorkflowCard } from "../components/WorkflowCard";
 import { services } from "../data/services";
 import { proofBlocks, sampleOutcomes } from "../data/testimonials";
 import { workflows } from "../data/workflows";
@@ -15,6 +13,17 @@ import type { WorkflowItem } from "../data/types";
 interface HomeProps {
   onOpenWorkflow: (workflow: WorkflowItem) => void;
 }
+
+const homeSystems = [
+  "Outbound Email Infrastructure",
+  "LinkedIn Pipeline System",
+  "Lead Intelligence & Enrichment",
+  "Appointment Conversion System",
+  "CRM & Revenue Operations",
+  "Cold Calling Infrastructure",
+]
+  .map((title) => services.find((service) => service.title === title))
+  .filter((service): service is (typeof services)[number] => Boolean(service));
 
 export function Home({ onOpenWorkflow }: HomeProps) {
   return (
@@ -30,33 +39,23 @@ export function Home({ onOpenWorkflow }: HomeProps) {
         </p>
       </section>
 
-      <section className="about-video" id="about" data-reveal>
-        <div className="about-video__media">
-          <img
-            src="/images/workflows/workflow.png"
-            alt="Outbound infrastructure workflow preview"
-            className="about-video__poster"
-            loading="lazy"
-          />
-          <div className="about-video__overlay" aria-hidden="true" />
+      <section className="home-about" id="about" data-reveal>
+        <div className="home-about__panel home-about__heading">
+          <span className="section__eyebrow">Brief about</span>
+          <h2>Aureli turns outbound motion into operating infrastructure.</h2>
         </div>
-        <div className="about-video__copy">
-          <span className="section__eyebrow">Who we are</span>
-          <h2 className="about-video__title">
-            Aureli designs outbound infrastructure, not isolated automation.
-          </h2>
-          <p className="about-video__desc">
-            We connect targeting, messaging, enrichment, CRM operations, and
-            appointment conversion into systems that are easier to manage,
-            measure, and improve.
+        <div className="home-about__panel home-about__copy">
+          <p>
+            Aureli designs and deploys the infrastructure behind modern
+            outbound - connecting lead sourcing, enrichment, outreach,
+            follow-ups, CRM tracking, and appointment booking into one
+            repeatable revenue engine.
           </p>
           <Link className="btn btn-ghost" to="/about">
             Learn about Aureli
           </Link>
         </div>
       </section>
-
-      <StackStrip />
 
       <main>
         <section className="section pinned-section" id="services">
@@ -70,7 +69,7 @@ export function Home({ onOpenWorkflow }: HomeProps) {
               subtitle="Each system is designed to remove operational bottlenecks and create a more consistent outbound process."
             />
             <div className="grid grid--systems">
-              {services.slice(0, 6).map((service) => (
+              {homeSystems.map((service) => (
                 <ServiceCard key={service.title} {...service} />
               ))}
             </div>
@@ -84,13 +83,52 @@ export function Home({ onOpenWorkflow }: HomeProps) {
           <div className="pinned-section__content">
             <SectionHeader
               eyebrow="Case study preview"
-              title="Example systems built around business outcomes"
-              subtitle="These cards describe example builds and sample outcomes. They are not client testimonials or verified performance claims."
+              title="Systems showcase"
+              subtitle="Example workflow builds, framed around the operational problem solved and the system created."
               centered
             />
-            <div className="workflow-grid" role="list">
+            <div className="home-showcase-grid" role="list">
               {workflows.slice(0, 3).map((workflow) => (
-                <WorkflowCard key={workflow.id} workflow={workflow} onOpen={onOpenWorkflow} />
+                <article
+                  className="home-showcase-card"
+                  key={workflow.id}
+                  role="listitem"
+                  tabIndex={0}
+                  onClick={() => onOpenWorkflow(workflow)}
+                  onKeyDown={(event) => {
+                    if (event.key === "Enter" || event.key === " ") {
+                      event.preventDefault();
+                      onOpenWorkflow(workflow);
+                    }
+                  }}
+                >
+                  <div className="home-showcase-card__preview" aria-hidden="true">
+                    {workflow.images?.[0] ? (
+                      <img src={workflow.images[0]} alt="" loading="lazy" />
+                    ) : (
+                      <div className="home-showcase-card__placeholder">
+                        <span />
+                        <span />
+                        <span />
+                      </div>
+                    )}
+                  </div>
+                  <div className="home-showcase-card__body">
+                    <span className="case-card__badge">{workflow.category}</span>
+                    <h3>{workflow.title}</h3>
+                    <div className="home-showcase-card__tools">
+                      {workflow.toolsUsed.slice(0, 4).map((tool) => (
+                        <span key={tool}>{tool}</span>
+                      ))}
+                    </div>
+                    <p>
+                      <strong>Problem solved:</strong> {workflow.problem}
+                    </p>
+                    <p>
+                      <strong>Outcome:</strong> {workflow.outcome}
+                    </p>
+                  </div>
+                </article>
               ))}
             </div>
           </div>

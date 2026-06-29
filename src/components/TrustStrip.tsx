@@ -1,19 +1,27 @@
-import { Fragment } from "react";
-import { proofItems } from "../data/services";
+const stackBadges = [
+  { name: "Apollo", mark: "A", className: "trust-logo--apollo" },
+  { name: "HubSpot", mark: "H", className: "trust-logo--hubspot" },
+  { name: "n8n", mark: "n8n", className: "trust-logo--n8n" },
+  { name: "Clay", mark: "C", className: "trust-logo--clay" },
+  { name: "Instantly", mark: "I", className: "trust-logo--instantly" },
+  { name: "Airtable", mark: "A", className: "trust-logo--airtable" },
+];
 
 export function TrustStrip() {
   return (
-    <section className="trust-strip" aria-label="Proof points">
+    <section className="trust-strip" aria-label="Outbound stack">
       <div className="trust-strip-inner">
-        {proofItems.map(({ value, label }, i) => (
-          <Fragment key={label}>
-            {i > 0 && <div className="stat-divider" aria-hidden="true" />}
-            <div className="stat-item">
-              <span className="stat-num">{value}</span>
-              <span className="stat-label">{label}</span>
-            </div>
-          </Fragment>
-        ))}
+        <span className="trust-strip__label">Stack used in outbound systems</span>
+        <div className="trust-logo-marquee" aria-label="Apollo, HubSpot, n8n, Clay, Instantly, Airtable">
+          <div className="trust-logo-track">
+            {[...stackBadges, ...stackBadges].map((tool, index) => (
+              <span className="trust-badge" key={`${tool.name}-${index}`} aria-hidden={index >= stackBadges.length}>
+                <span className={`trust-logo-mark ${tool.className}`}>{tool.mark}</span>
+                <span className="trust-logo-name">{tool.name}</span>
+              </span>
+            ))}
+          </div>
+        </div>
       </div>
     </section>
   );

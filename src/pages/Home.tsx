@@ -31,30 +31,55 @@ export function Home({ onOpenWorkflow }: HomeProps) {
       <Hero />
       <TrustStrip />
 
+      <div className="home-video-about-flow">
+        <section className="home-video-section" aria-label="Who we are video placeholder">
+          <div className="home-video-card">
+            <div className="home-video-card__poster" role="img" aria-label="Placeholder for Aureli who we are video">
+              <div className="home-video-card__mark">
+                <span>The</span>
+                <strong>System</strong>
+              </div>
+              <div className="home-video-card__copy">
+                <span>[ ] Who we are / what we do</span>
+                <p>
+                  Outbound systems are not static anymore. Pipeline needs
+                  sourcing, enrichment, outreach, CRM tracking, and booking
+                  working as one motion.
+                </p>
+              </div>
+              <button className="home-video-card__play" type="button" aria-label="Video placeholder">
+                Placeholder video
+              </button>
+            </div>
+          </div>
+        </section>
+
+        <section className="home-about" id="about" data-reveal>
+          <div className="home-about__panel home-about__heading">
+            <span className="section__eyebrow">Brief about</span>
+            <h2>Aureli turns outbound motion into operating infrastructure.</h2>
+          </div>
+          <div className="home-about__panel home-about__copy">
+            <div className="home-about__video-dock" aria-hidden="true" />
+            <p>
+              Aureli designs and deploys the infrastructure behind modern
+              outbound - connecting lead sourcing, enrichment, outreach,
+              follow-ups, CRM tracking, and appointment booking into one
+              repeatable revenue engine.
+            </p>
+            <Link className="btn btn-ghost" to="/about">
+              Learn about Aureli
+            </Link>
+          </div>
+        </section>
+      </div>
+
       <section className="philosophy" id="philosophy" data-reveal>
         <p className="philosophy__text">
           Outbound isn&apos;t a campaign.
           <br />
           It&apos;s <span className="philosophy__accent gradient-text">infrastructure</span>.
         </p>
-      </section>
-
-      <section className="home-about" id="about" data-reveal>
-        <div className="home-about__panel home-about__heading">
-          <span className="section__eyebrow">Brief about</span>
-          <h2>Aureli turns outbound motion into operating infrastructure.</h2>
-        </div>
-        <div className="home-about__panel home-about__copy">
-          <p>
-            Aureli designs and deploys the infrastructure behind modern
-            outbound - connecting lead sourcing, enrichment, outreach,
-            follow-ups, CRM tracking, and appointment booking into one
-            repeatable revenue engine.
-          </p>
-          <Link className="btn btn-ghost" to="/about">
-            Learn about Aureli
-          </Link>
-        </div>
       </section>
 
       <main>

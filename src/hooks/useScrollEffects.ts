@@ -98,6 +98,55 @@ export function useScrollEffects(theme: Theme, routeKey = "") {
         );
       });
 
+      const homeVideoFlow = document.querySelector<HTMLElement>(
+        ".home-video-about-flow",
+      );
+      const homeVideoCard = document.querySelector<HTMLElement>(
+        ".home-video-card",
+      );
+      const homeVideoDock = document.querySelector<HTMLElement>(
+        ".home-about__video-dock",
+      );
+
+      if (!isMobile && homeVideoFlow && homeVideoCard && homeVideoDock) {
+        gsap.fromTo(
+          homeVideoCard,
+          {
+            x: 0,
+            y: 0,
+            scale: 1,
+            borderRadius: "0px",
+            transformOrigin: "top left",
+          },
+          {
+            x: () => {
+              const card = homeVideoCard.getBoundingClientRect();
+              const dock = homeVideoDock.getBoundingClientRect();
+              return dock.left - card.left;
+            },
+            y: () => {
+              const card = homeVideoCard.getBoundingClientRect();
+              return window.innerHeight * 0.32 - card.top;
+            },
+            scale: () => {
+              const card = homeVideoCard.getBoundingClientRect();
+              const dock = homeVideoDock.getBoundingClientRect();
+              return Math.max(0.28, Math.min(0.52, dock.width / card.width));
+            },
+            borderRadius: "28px",
+            ease: "none",
+            scrollTrigger: {
+              trigger: homeVideoFlow,
+              endTrigger: homeVideoDock,
+              start: "top 72px",
+              end: "top 32%",
+              scrub: 0.8,
+              invalidateOnRefresh: true,
+            },
+          },
+        );
+      }
+
       // Horizontal pinned proof blocks
       const track = document.querySelector<HTMLElement>(".proof-pin");
       const trackInner = document.querySelector<HTMLElement>(".proof-pin__track");

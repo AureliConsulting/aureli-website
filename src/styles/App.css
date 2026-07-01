@@ -2494,50 +2494,46 @@ h3,
   background: var(--color-dark-slate);
   border-top: 1px solid rgba(245, 245, 242, 0.06);
   border-bottom: 1px solid rgba(245, 245, 242, 0.08);
-  padding: 1.1rem var(--sp-8);
+  padding: 1.05rem 0;
+  overflow: hidden;
 }
 
 .trust-strip-inner {
-  max-width: 1160px;
-  justify-content: space-between;
-  gap: 0.75rem;
-}
-
-.trust-strip__label {
-  color: rgba(245, 245, 242, 0.58);
-  font-size: 0.72rem;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
+  max-width: none;
+  width: 100%;
+  justify-content: center;
+  gap: 0;
 }
 
 .trust-badge {
   display: inline-flex;
   align-items: center;
-  gap: 0.55rem;
-  min-height: 34px;
-  padding: 0.35rem 0.9rem 0.35rem 0.45rem;
+  justify-content: center;
+  width: 68px;
+  height: 54px;
+  padding: 0;
   border-radius: var(--r-full);
   border: 1px solid rgba(245, 245, 242, 0.1);
   background: rgba(23, 26, 28, 0.34);
-  color: var(--color-off-white);
-  font-size: 0.82rem;
   flex: 0 0 auto;
 }
 
 .trust-logo-marquee {
-  flex: 1;
-  min-width: min(720px, 100%);
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
   overflow: hidden;
-  mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
-  -webkit-mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
+  mask-image: linear-gradient(to right, transparent, black 6%, black 94%, transparent);
+  -webkit-mask-image: linear-gradient(to right, transparent, black 6%, black 94%, transparent);
 }
 
 .trust-logo-track {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
+  gap: clamp(1.35rem, 4vw, 3.25rem);
   width: max-content;
-  animation: trust-logo-drift 32s linear infinite;
+  animation: trust-logo-drift 44s linear infinite;
+  padding-inline: clamp(1.5rem, 5vw, 4rem);
 }
 
 .trust-logo-marquee:hover .trust-logo-track {
@@ -2547,24 +2543,42 @@ h3,
 .trust-logo-mark {
   display: inline-grid;
   place-items: center;
-  width: 28px;
-  height: 28px;
+  width: 38px;
+  height: 38px;
   border-radius: 50%;
   color: var(--color-off-white);
-  font-size: 0.68rem;
-  font-weight: 800;
-  letter-spacing: -0.02em;
   animation: trust-logo-rotate 18s linear infinite;
 }
 
-.trust-logo-name {
-  color: rgba(245, 245, 242, 0.84);
-  font-weight: 600;
+.trust-logo-mark svg {
+  width: 22px;
+  height: 22px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.trust-logo--hubspot svg circle,
+.trust-logo--apollo svg circle,
+.trust-logo--clay svg path:first-child,
+.trust-logo--instantly svg path,
+.trust-logo--airtable svg path,
+.trust-logo--n8n svg circle {
+  fill: currentColor;
+}
+
+.trust-logo--hubspot svg path,
+.trust-logo--n8n svg path,
+.trust-logo--clay svg path:not(:first-child),
+.trust-logo--apollo svg path {
+  fill: none;
 }
 
 .trust-logo--apollo { background: #5d5fef; }
 .trust-logo--hubspot { background: #ff7a59; }
-.trust-logo--n8n { background: #ea4b71; font-size: 0.55rem; }
+.trust-logo--n8n { background: #ea4b71; }
 .trust-logo--clay { background: #7A9B84; color: #171A1C; }
 .trust-logo--instantly { background: #4f8cff; }
 .trust-logo--airtable {
@@ -2574,7 +2588,7 @@ h3,
 
 @keyframes trust-logo-drift {
   0% { transform: translateX(0); }
-  100% { transform: translateX(calc(-50% - 0.375rem)); }
+  100% { transform: translateX(-50%); }
 }
 
 @keyframes trust-logo-rotate {
@@ -3231,13 +3245,8 @@ main {
     justify-content: center;
   }
 
-  .trust-strip__label {
-    width: 100%;
-    text-align: center;
-  }
-
   .trust-logo-marquee {
-    min-width: 100%;
+    width: 100vw;
   }
 
   .home-about {
